@@ -6,7 +6,11 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('users.urls')),
     path('auth/', include('djoser.urls')),
-    path('auth/',  include('djoser.urls.jwt')),
+    path('auth/',  include('djoser.urls.jwt')), 
+    path('tweets/', include('tweets.urls')),
+    path('notify/', include('notifications.urls')),
+    path('chats/', include('chat.urls')),
+
 ] 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
