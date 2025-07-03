@@ -31,9 +31,10 @@ INSTALLED_APPS = [
     'users',
     'djoser',
     'django_filters',
+    'notifications',
     'tweets',
     'chat',
-    'notifications',
+    'ai',
 ]
 
 MIDDLEWARE = [
