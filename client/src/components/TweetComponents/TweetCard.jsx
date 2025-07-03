@@ -24,8 +24,8 @@ const TweetCard = () => {
       {!tweetsInfo.isLoading && tweetsInfo.tweets.length === 0 && (
         <div className="mt-3 d-flex justify-content-center">
           <span>
-            <p className="side-name">Follow User to see their post</p> 
-          <Link to="/explore">  <button className="ml-4 link-tweet">Go To Explore</button></Link>
+            <p className="side-name">Follow User to see their post</p>
+            <Link to="/explore">  <button className="ml-4 link-tweet">Go To Explore</button></Link>
           </span>
         </div>
       )}

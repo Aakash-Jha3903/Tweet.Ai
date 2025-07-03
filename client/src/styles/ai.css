@@ -1,0 +1,58 @@
+
+/* sentiment-analysis starts */
+.sentiment-container {
+    background-color: #1e1e2f;
+    border-radius: 10px;
+  padding: 1rem;
+  margin-top: 1rem;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.sentiment-heading {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.sentiment-overall {
+  margin: 0.5rem 0;
+}
+
+.sentiment-positive {
+  color: #4caf50;
+}
+
+.sentiment-negative {
+  color: #f44336;
+}
+
+.sentiment-neutral {
+  color: #9e9e9e;
+}
+
+.sentiment-comment {
+  border-top: 1px solid #333;
+  padding-top: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.sentiment-comment span {
+  font-size: 0.95rem;
+}
+
+.sentiment-suggestion {
+  margin-top: 1rem;
+  font-style: italic;
+  color: #ffc107;
+}
+
+.sentiment-dropdown {
+  background-color: #111;
+  color: #fff;
+  border: 1px solid #333;
+  border-radius: 5px;
+  padding: 0.3rem 0.5rem;
+  margin: 0.5rem 0;
+}
+/* sentiment-analysis end */

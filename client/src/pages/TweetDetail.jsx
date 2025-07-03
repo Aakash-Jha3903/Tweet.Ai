@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  tweet_detail,
-  deleteTweet,
-  likeTweet,
-} from "../redux/asyncActions/TweetAsync";
-
+import { tweet_detail, deleteTweet, likeTweet, } from "../redux/asyncActions/TweetAsync";
 import Second from "../components/Second";
 import TweetHeader from "../components/TweetComponents/tweetHeader";
 import { Link, useHistory } from "react-router-dom";
@@ -18,28 +13,26 @@ import AlertMessage from "../components/SmallComponent/alertMessage";
 import { TweetOperation } from "../components/TweetOperation";
 import { TweetContent } from "../components/TweetComponents/TweetContent";
 import CommentCard from "../components/CommentComponent/CommentCard";
-import {
-  addComment,
-  load_more_comment,
-  tweet_comments,
-} from "../redux/asyncActions/CommentAsync";
+import { addComment, load_more_comment, tweet_comments, } from "../redux/asyncActions/CommentAsync";
 import ClipLoader from "react-spinners/ClipLoader";
 import AddPicker from "../components/SmallComponent/AddPicker";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faRobot } from "@fortawesome/free-solid-svg-icons";
+import { axiosInstance } from "../index";
+import '../styles/ai.css'
 
 const TweetDetail = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [edit, setEdit] = useState(false);
   const dispatch = useDispatch();
-
   const history = useHistory();
   const [editTitle, setEditTitle] = useState("");
-  const tweet = useSelector((state) => state.tweetReducer.singleTweet);
   const [commentInput, setCommentInput] = useState("");
-  const userIn = useSelector((state) => state.userReducer);
 
   const { id } = useParams();
+  const tweet = useSelector((state) => state.tweetReducer.singleTweet);
+  const userIn = useSelector((state) => state.userReducer);
   const { user, isAuthenticated } = userIn;
-
   const message = useSelector((state) => state.tweetReducer.message);
   const comments = useSelector((state) => state.commentReducer);
   const meta = comments.meta;
@@ -48,9 +41,11 @@ const TweetDetail = () => {
     dispatch(tweet_detail(id));
     dispatch(tweet_comments(id));
   }, [dispatch, id]);
+
   const likeTweetD = (id) => {
     dispatch(likeTweet(id));
   };
+
   message &&
     setTimeout(() => {
       dispatch(removeMesage());
@@ -61,22 +56,73 @@ const TweetDetail = () => {
     setIsOpen(!isOpen);
     setEditTitle(tweet.title);
   };
+
   const commentAdd = () => {
     dispatch(addComment(id, commentInput));
     setCommentInput("");
   };
-  // http://127.0.0.1:8000/tweets/comments/18/?page=2
 
   const loadMoreComment = () => {
-    console.log(meta?.page, meta?.next);
-    if (meta.next !== null) {
+    if (meta?.next !== null) {
       dispatch(load_more_comment(id, meta.page + 1));
     }
   };
+
+  // Sentiment
+  const [sentiment, setSentiment] = useState(null);
+  const [loadingSentiment, setLoadingSentiment] = useState(false);
+  const [filter, setFilter] = useState("All");
+
+  const fetchSentiment = async () => {
+    setLoadingSentiment(true);
+    try {
+      const res = await axiosInstance.get(`ai/tweets-sentiment/${tweet.id}/`);
+      setSentiment(res.data);
+    } catch (err) {
+      setSentiment({ results: [], error: true });
+    }
+    setLoadingSentiment(false);
+  };
+
+  const filteredResults = sentiment?.results?.filter((item) =>
+    filter === "All" ? true : item.sentiment === filter
+  );
+
+
+  const labeledSentiment = sentiment?.results?.map((item) => {
+    let label = "Neutral";
+    if (item.polarity > 0.2) label = "Positive";
+    else if (item.polarity < -0.2) label = "Negative";
+    return { ...item, label };
+  }) || [];
+
+
+  const filteredSentiment = filter === "All"
+    ? labeledSentiment
+    : labeledSentiment.filter((item) => item.label === filter);
+
+  const count = {
+    positive: labeledSentiment.filter(i => i.label === "Positive").length,
+    neutral: labeledSentiment.filter(i => i.label === "Neutral").length,
+    negative: labeledSentiment.filter(i => i.label === "Negative").length,
+  };
+
+  const avgPolarity = labeledSentiment.reduce((sum, i) => sum + i.polarity, 0) / labeledSentiment.length || 0;
+
+  const overallSentiment =
+    avgPolarity > 0.2 ? "Positive" :
+      avgPolarity < -0.2 ? "Negative" : "Neutral";
+
+  const sentimentSuggestion =
+    overallSentiment === "Positive"
+      ? "Great! Your tweet is well received. 🎉"
+      : overallSentiment === "Negative"
+        ? "Consider improving the tweet or engaging with your audience. 🤔"
+        : "Your tweet is getting mixed reactions. 😐";
+
+
   return (
     <div>
-      {/* <Sidebar /> */}
-      {/* alert message during tweet operations */}
       {message && (
         <AlertMessage
           removeMesage={removeMesage}
@@ -84,28 +130,21 @@ const TweetDetail = () => {
           message={message}
         />
       )}
-      {/* tweet card */}
+
       {tweet.author && (
         <Second>
           <TweetHeader headerName="Detail" />
+
           <div className="tweetCard">
             <div className="actual-tweet">
               {isAuthenticated && (
                 <span>
-                  <FiMoreHorizontal
-                    data-toggle="dropdown"
-                    className="dropdownIcon"
-                    id={`#${tweet.id}dropdown`}
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  />
-
+                  <FiMoreHorizontal className="dropdownIcon" />
                   <div className="dropdown-menu dropdown-menu-right dropdownMenu">
                     {user?.email === tweet?.author.email ? (
                       <>
                         <p onClick={editpost}>
-                          <BiEditAlt />
-                          <span>Edit Post</span>
+                          <BiEditAlt /> <span>Edit Post</span>
                         </p>
                         <p
                           onClick={() => {
@@ -125,6 +164,7 @@ const TweetDetail = () => {
                   </div>
                 </span>
               )}
+
               <span className="add-tweet-image">
                 <Link to={`/${tweet.author.username}`}>
                   <img
@@ -136,7 +176,7 @@ const TweetDetail = () => {
                   />
                 </Link>
               </span>
-              {/* Tweet content component which shows tweet info - title,images,viewer */}
+
               <TweetContent
                 tweet={tweet}
                 editTitle={editTitle}
@@ -147,6 +187,7 @@ const TweetDetail = () => {
                 dispatch={dispatch}
               />
             </div>
+
             <TweetOperation
               user={isAuthenticated ? user : ""}
               id={parseInt(id)}
@@ -158,15 +199,87 @@ const TweetDetail = () => {
               bookmark={tweet.i_bookmarked}
             />
           </div>
-          {/* comment lists */}
+
+          {/* Sentiment Analysis Section */}
+          {tweet.author && user && tweet.author.username === user.username && (
+            <div className="mt-3 mb-3">
+              <button className="link-tweet" onClick={fetchSentiment} disabled={loadingSentiment}>
+                {loadingSentiment ? (
+                  "Analyzing..."
+                ) : (
+                  <>
+                    Run Sentiment AI{" "}
+                    <FontAwesomeIcon
+                      icon={faRobot}
+                      bounce
+                    />
+                  </>
+                )}
+              </button>
+
+              {sentiment && (
+                <div className="sentiment-container">
+                  <h5 className="sentiment-heading">Sentiment Analysis Results:</h5>
+                  <p className="sentiment-overall">
+                    <strong>Overall Sentiment:</strong>{" "}
+                    <span className={
+                      overallSentiment === "Positive" ? "sentiment-positive" :
+                        overallSentiment === "Negative" ? "sentiment-negative" :
+                          "sentiment-neutral"
+                    }>
+                      {overallSentiment}
+                    </span>
+                  </p>
+                  <p>Average Polarity: {avgPolarity.toFixed(2)}</p>
+                  <p>
+                    Positive: {count.positive}, Neutral: {count.neutral}, Negative: {count.negative}
+                  </p>
+                  <p className="sentiment-suggestion">
+                    <strong>Suggestion:</strong> {sentimentSuggestion}
+                  </p>
+
+                  {/* Dropdown for filtering */}
+                  <label htmlFor="sentimentFilter"><strong>Filter:</strong></label>{" "}
+                  <select
+                    id="sentimentFilter"
+                    className="sentiment-dropdown"
+                    value={filter}
+                    onChange={(e) => setFilter(e.target.value)}
+                  >
+                    <option value="All">All</option>
+                    <option value="Positive">Positive</option>
+                    <option value="Neutral">Neutral</option>
+                    <option value="Negative">Negative</option>
+                  </select>
+
+                  {/* Filtered Comments List */}
+                  <div>
+                    {sentiment.results.length === 0 ? (
+                      <h2 className="text-center" >No comments to analyze yet.</h2>
+                    ) : (
+                      comments.commentList
+                        .filter(c => filteredSentiment.find(f => f.comment_id === c.id))
+                        .map((comment) => (
+                          <CommentCard
+                            tweetId={tweet.id}
+                            user={isAuthenticated ? user : ""}
+                            key={comment.id}
+                            comment={comment}
+                          />
+                        ))
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Comments Section */}
           <section className="comment-list">
             {isAuthenticated && (
               <div className="commentDiv">
                 <img
-                  src={
-                    (user && user.avatar) ||
-                    "https://qph.fs.quoracdn.net/main-qimg-92e5c1d46505b34638aafd281449dabc"
-                  }
+                  src={user?.avatar || "https://qph.fs.quoracdn.net/main-qimg-92e5c1d46505b34638aafd281449dabc"}
                   alt="comment-author"
                   className="authorImage"
                 />
@@ -176,22 +289,14 @@ const TweetDetail = () => {
                   className="commentInput"
                   placeholder="Tweet your Reply"
                 ></textarea>
-
                 <AddPicker setInput={setCommentInput} />
-                <button
-                  disabled={!commentInput}
-                  onClick={commentAdd}
-                  className="link-tweet"
-                >
-                  {comments.uploading ? (
-                    <ClipLoader color="white" loading={true} size={18} />
-                  ) : (
-                    "Reply"
-                  )}
+                <button disabled={!commentInput} onClick={commentAdd} className="link-tweet">
+                  {comments.uploading ? <ClipLoader color="white" loading={true} size={18} /> : "Reply"}
                 </button>
               </div>
             )}
-            {comments && comments.isLoading ? (
+
+            {comments?.isLoading ? (
               <span className="d-flex justify-content-center mt-4">
                 <ClipLoader color="#f44" loading={true} size={23} />
               </span>
@@ -205,6 +310,7 @@ const TweetDetail = () => {
                 />
               ))
             )}
+
             {!comments.isLoading && meta?.next && (
               <div className="mt-3 d-flex justify-content-center">
                 <button onClick={loadMoreComment} className="link-tweet">
