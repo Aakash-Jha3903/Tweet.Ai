@@ -1,10 +1,13 @@
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from tweets.models import Tweet, Comment
 from collections import Counter
+
 from textblob import TextBlob
+from transformers import pipeline
+
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -61,3 +64,29 @@ def sentiment_analysis(request, tweet_id):
         'suggestion': suggestion,
         'results': results
     })
+    
+
+summarizer = None
+
+def get_summarizer():
+    global summarizer
+    if summarizer is None:
+        summarizer = pipeline("summarization", model="t5-small")
+    return summarizer
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated]) 
+def summarize_tweet(request):
+    tweet_text = request.data.get('text', '')
+
+    if not tweet_text.strip():
+        return Response({'error': 'No tweet text provided'}, status=400)
+    if len(tweet_text)>1024:
+        tweet_text = tweet_text[:1024]
+
+    try:
+        model = get_summarizer()
+        summary = model(tweet_text, min_length=20,max_length=50, do_sample=False)
+        return Response({'summary': summary[0]['summary_text'].capitalize() })
+    except Exception as e:
+        return Response({'error': str(e)}, status=500)

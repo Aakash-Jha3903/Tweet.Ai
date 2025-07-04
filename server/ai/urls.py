@@ -4,7 +4,9 @@ from django.conf.urls.static import static
 from . import views
 
 urlpatterns = [
-path('tweets-sentiment/<int:tweet_id>/', views.sentiment_analysis, name='sentiment-analysis'),
+    path('tweets-sentiment/<int:tweet_id>/', views.sentiment_analysis, name='sentiment-analysis'),
+    path('tweet-summarize/', views.summarize_tweet, name='summarize_tweet')
+    
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
