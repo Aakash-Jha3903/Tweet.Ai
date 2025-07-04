@@ -1,0 +1,70 @@
+# Python
+__pycache__/
+*.py[cod]
+*.sqlite3
+*.log
+*.pot
+*.pyc
+*.pyo
+*.pyd
+*.env
+.env.*
+db.sqlite3
+
+# Django specific
+/staticfiles/
+/media/
+tweetspic/
+avatars/
+media/
+c2/
+/*.sqlite3
+local_settings.py
+del/
+
+# Virtual Environment
+.env
+venv/
+env/
+vir_tweet/
+
+# VSCode
+.vscode/
+
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# React build
+build/
+dist/
+
+# Testing files
+test-results/
+test/
+tests/
+test.py
+tests.py
+
+# Coverage reports
+htmlcov/
+coverage.xml
+del/
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# IDEs
+.idea/
+*.swp
+
+# Lint
+*.lint
+*.mypy_cache
+
+# migrations
+migrations/
