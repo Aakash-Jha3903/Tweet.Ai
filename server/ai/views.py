@@ -87,6 +87,7 @@ def summarize_tweet(request):
     try:
         model = get_summarizer()
         summary = model(tweet_text, min_length=20,max_length=50, do_sample=False)
-        return Response({'summary': summary[0]['summary_text'].capitalize() })
+        return Response({'summary': summary[0]
+                         ['summary_text'].capitalize() })
     except Exception as e:
         return Response({'error': str(e)}, status=500)
