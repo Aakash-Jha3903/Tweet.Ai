@@ -16,10 +16,9 @@ import CommentCard from "../components/CommentComponent/CommentCard";
 import { addComment, load_more_comment, tweet_comments, } from "../redux/asyncActions/CommentAsync";
 import ClipLoader from "react-spinners/ClipLoader";
 import AddPicker from "../components/SmallComponent/AddPicker";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faRobot } from "@fortawesome/free-solid-svg-icons";
 import { axiosInstance } from "../index";
-import '../styles/ai.css'
+import SummarizeButton from "../components/SomeAiComponent/SummarizeButton";
+import SentimentButton from "../components/SomeAiComponent/SentimentButton";
 
 const TweetDetail = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -186,7 +185,9 @@ const TweetDetail = () => {
                 id={tweet.id}
                 dispatch={dispatch}
               />
+
             </div>
+
 
             <TweetOperation
               user={isAuthenticated ? user : ""}
@@ -200,79 +201,17 @@ const TweetDetail = () => {
             />
           </div>
 
-          {/* Sentiment Analysis Section */}
-          {tweet.author && user && tweet.author.username === user.username && (
-            <div className="mt-3 mb-3">
-              <button className="link-tweet" onClick={fetchSentiment} disabled={loadingSentiment}>
-                {loadingSentiment ? (
-                  "Analyzing..."
-                ) : (
-                  <>
-                    Run Sentiment AI{" "}
-                    <FontAwesomeIcon
-                      icon={faRobot}
-                      bounce
-                    />
-                  </>
-                )}
-              </button>
 
-              {sentiment && (
-                <div className="sentiment-container">
-                  <h5 className="sentiment-heading">Sentiment Analysis Results:</h5>
-                  <p className="sentiment-overall">
-                    <strong>Overall Sentiment:</strong>{" "}
-                    <span className={
-                      overallSentiment === "Positive" ? "sentiment-positive" :
-                        overallSentiment === "Negative" ? "sentiment-negative" :
-                          "sentiment-neutral"
-                    }>
-                      {overallSentiment}
-                    </span>
-                  </p>
-                  <p>Average Polarity: {avgPolarity.toFixed(2)}</p>
-                  <p>
-                    Positive: {count.positive}, Neutral: {count.neutral}, Negative: {count.negative}
-                  </p>
-                  <p className="sentiment-suggestion">
-                    <strong>Suggestion:</strong> {sentimentSuggestion}
-                  </p>
+          {/* Tweet-Summarize Section */}
+          <div className="mx-2 my-2">
+            {tweet.title && tweet.title.length > 15 && (
+              <SummarizeButton
+                tweetId={tweet.id}
+                tweetText={tweet.text || tweet.title || ''}
+              />
+            )}
+          </div>
 
-                  {/* Dropdown for filtering */}
-                  <label htmlFor="sentimentFilter"><strong>Filter:</strong></label>{" "}
-                  <select
-                    id="sentimentFilter"
-                    className="sentiment-dropdown"
-                    value={filter}
-                    onChange={(e) => setFilter(e.target.value)}
-                  >
-                    <option value="All">All</option>
-                    <option value="Positive">Positive</option>
-                    <option value="Neutral">Neutral</option>
-                    <option value="Negative">Negative</option>
-                  </select>
-
-                  {/* Filtered Comments List */}
-                  <div>
-                    {sentiment.results.length === 0 ? (
-                      <h2 className="text-center" >No comments to analyze yet.</h2>
-                    ) : (
-                      comments.commentList
-                        .filter(c => filteredSentiment.find(f => f.comment_id === c.id))
-                        .map((comment) => (
-                          <CommentCard
-                            tweetId={tweet.id}
-                            user={isAuthenticated ? user : ""}
-                            key={comment.id}
-                            comment={comment}
-                          />
-                        ))
-                    )}
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
 
           {/* Comments Section */}
           <section className="comment-list">
@@ -287,7 +226,7 @@ const TweetDetail = () => {
                   value={commentInput}
                   onChange={(e) => setCommentInput(e.target.value)}
                   className="commentInput"
-                  placeholder="Tweet your Reply"
+                  placeholder="Tweet your Reply ....."
                 ></textarea>
                 <AddPicker setInput={setCommentInput} />
                 <button disabled={!commentInput} onClick={commentAdd} className="link-tweet">
@@ -296,18 +235,35 @@ const TweetDetail = () => {
               </div>
             )}
 
+
+            {/* Sentiment Analysis Section */}
+            <div className="mx-2">
+              {comments?.commentList.length > 3 && (
+                <SentimentButton
+                  tweet={tweet}
+                  comments={comments}
+                  user={user}
+                  isAuthenticated={isAuthenticated}
+                />
+              )}
+            </div>
+
+
             {comments?.isLoading ? (
               <span className="d-flex justify-content-center mt-4">
                 <ClipLoader color="#f44" loading={true} size={23} />
               </span>
             ) : (
               comments?.commentList.map((comment) => (
-                <CommentCard
-                  tweetId={tweet.id}
-                  user={isAuthenticated ? user : ""}
-                  key={comment.id}
-                  comment={comment}
-                />
+                <>
+                  <CommentCard
+                    tweetId={tweet.id}
+                    user={isAuthenticated ? user : ""}
+                    key={comment.id}
+                    comment={comment}
+                  />
+
+                </>
               ))
             )}
 

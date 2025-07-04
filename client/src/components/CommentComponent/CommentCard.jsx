@@ -13,6 +13,7 @@ import Moment from "moment";
 import ReplyComment from "./ReplyComment";
 import { EditPost } from "../EditPost";
 import { DropdownContent } from "./DropDownContent";
+import SummarizeButton from "../SomeAiComponent/SummarizeButton";
 
 const CommentCard = ({ tweetId, user, comment }) => {
   const [curIndex, setCurIndex] = useState(null);
@@ -86,6 +87,13 @@ const CommentCard = ({ tweetId, user, comment }) => {
         like_count={comment.like_count}
         NoRetweetMark={true} //don't show retwet or bookmark for comment
       />
+      {comment.body && comment.body.length>20 &&  (
+        <SummarizeButton
+          tweetId={tweetId}
+          tweetText={comment.body || ''}
+        />
+      )}
+
       {comment.children.length > 0 && (
         <strong
           onClick={() => setShowReply(!showReply)}

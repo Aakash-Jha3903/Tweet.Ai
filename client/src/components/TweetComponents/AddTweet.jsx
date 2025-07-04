@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "emoji-mart/css/emoji-mart.css";
 import { Picker } from "emoji-mart";
-import loadingGif from '../../loading.gif'; // 
+import loadingGif from '../../loading.gif'; 
 import {
   AiOutlinePicture,
   AiOutlineGif,
@@ -10,9 +10,9 @@ import {
   AiOutlineSchedule,
   AiOutlineBarChart,
   AiOutlineCloseCircle,
-  
+
 } from "react-icons/ai";
-import { FaGlobeAfrica,FaLock } from "react-icons/fa";
+import { FaGlobeAfrica, FaLock } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 import { addTweet } from "../../redux/asyncActions/TweetAsync";
 import ClipLoader from "react-spinners/ClipLoader";
@@ -55,7 +55,8 @@ const AddTweet = () => {
   const submitTweet = () => {
     const uploadData = new FormData();
     uploadData.append("title", tweetInput);
-    uploadData.append("is_private",isPrivate);
+    // uploadData.append("body", tweetInput);
+    uploadData.append("is_private", isPrivate);
     tweetImage && uploadData.append("image", tweetImage);
     dispatch(addTweet(uploadData));
     setPrevImage(null);
@@ -71,8 +72,8 @@ const AddTweet = () => {
             <img
               alt="img"
               src={
-                (user && user.avatar) ||loadingGif
-              
+                (user && user.avatar) || loadingGif
+
               }
               className="rounded-circle author-image"
               width="60px"
@@ -95,12 +96,12 @@ const AddTweet = () => {
             <div onClick={postMode} className="setPublic mx-3">
               {isPrivate ? (
                 <>
-                  <FaLock/>
+                  <FaLock />
                   <span className="mx-2">Set As private</span>
                 </>
               ) : (
                 <>
-                  
+
                   <FaGlobeAfrica />
                   <span className="mx-2">Set As public</span>
                 </>

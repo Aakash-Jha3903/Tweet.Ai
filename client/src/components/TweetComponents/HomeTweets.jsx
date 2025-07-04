@@ -7,6 +7,7 @@ import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { load_more } from "../../redux/asyncActions/TweetAsync";
 import { setSearch } from "../../redux/slices/NotificationSlice";
+
 const HomeTweets = () => {
   const history = useHistory();
   const dispatch = useDispatch();
