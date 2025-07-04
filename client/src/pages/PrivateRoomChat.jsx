@@ -156,12 +156,13 @@ const PrivateRoomChat = () => {
                   {msg?.sender?.username === username && (
                     <Link to={`/${msg?.sender.username}`}>
                       <img
-                        src={msg?.sender.avatar}
-                        alt="profile"
+                        src={`${process.env.REACT_APP_DOMAIN.slice(0, -1)}${msg?.sender.avatar}`}
+                        alt="sender profile"
                         className="authorImage"
                       />
                     </Link>
                   )}
+                  
 
                   <div
                     className={

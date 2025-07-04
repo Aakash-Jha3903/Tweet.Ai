@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
 import TweetHeader from "../components/TweetComponents/tweetHeader";
 import "../styles/chat.css";
-import { Link,useHistory} from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { getRooms } from "../redux/asyncActions/ChatAsync";
 import { useDispatch, useSelector } from "react-redux";
 import ClipLoader from "react-spinners/ClipLoader";
@@ -20,11 +20,11 @@ const Message = (props) => {
   const history = useHistory()
 
   useEffect(() => {
-   
-      dispatch(getRooms());
-      dispatch(setMsgNoti())
-    
-  }, [dispatch,history]);
+
+    dispatch(getRooms());
+    dispatch(setMsgNoti())
+
+  }, [dispatch, history]);
 
   const searchRoom = () => {
     let debouncer;
@@ -87,10 +87,17 @@ export const RoomResult = ({ res, me, otheruser }) => {
   return (
     <Link to={`/messages/w/${otheruser.username}`}>
       <div key={res.id} className="d-flex result">
-        <img
-          className="authorImage"
-          src={otheruser?.avatar || "https://as1.ftcdn.net/v2/jpg/03/53/11/00/1000_F_353110097_nbpmfn9iHlxef4EDIhXB1tdTD0lcWhG9.jpg"}
-          alt="profile-pic"
+        <img className="authorImage"
+          src={
+            otheruser?.avatar && otheruser.avatar !== "profile-default"
+              ? `${process.env.REACT_APP_DOMAIN.slice(0, -1)}${otheruser.avatar}/`
+              : "https://as1.ftcdn.net/v2/jpg/03/53/11/00/1000_F_353110097_nbpmfn9iHlxef4EDIhXB1tdTD0lcWhG9.jpg"
+          }
+          alt="User Avatar"
+          onError={(e) => {
+            e.target.onerror = null;
+            e.target.src = "https://as1.ftcdn.net/v2/jpg/03/53/11/00/1000_F_353110097_nbpmfn9iHlxef4EDIhXB1tdTD0lcWhG9.jpg";
+          }}
         />
 
         <div className="mx-3">
