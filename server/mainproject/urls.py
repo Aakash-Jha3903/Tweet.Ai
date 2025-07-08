@@ -9,8 +9,9 @@ urlpatterns = [
     path('auth/',  include('djoser.urls.jwt')), 
     path('tweets/', include('tweets.urls')),
     path('notify/', include('notifications.urls')),
-    path('chats/', include('chat.urls')),
     path('ai/', include('ai.urls')),
+    path('chats/', include('chat.urls')),
+    path('grok-ai/', include('grok_ai.urls')),
 
 ] 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
