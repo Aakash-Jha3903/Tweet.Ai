@@ -6,7 +6,7 @@ import Moment from "moment";
 import useUserInfo from "../hooks/useUserInfo";
 import { AiOutlineSchedule } from "react-icons/ai";
 import { BiSend } from "react-icons/bi";
-import { Link ,useHistory} from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import TweetHeader from "../components/TweetComponents/tweetHeader";
 import Viewer from "react-viewer";
@@ -17,6 +17,8 @@ import { removeMesage } from "../redux/slices/tweetSlice";
 import AlertMessage from "../components/SmallComponent/alertMessage";
 import UserEditModal from "../components/UserRelated/UserEditModal";
 import { FollowInfo } from "../components/SmallComponent/FollowInfo";
+import FollowListModal from "../components/UserRelated/FollowListModal"; // <-- import
+import { axiosInstance } from "../index";
 
 const Profile = () => {
   const { username } = useParams();
@@ -24,6 +26,10 @@ const Profile = () => {
   const [showUserModal, setShowUserModal] = useState(false);
   const [visible, setVisible] = useState(false);
   const [covervisible, setCoverVisible] = useState(false);
+  const [showFollowers, setShowFollowers] = useState(false);
+  const [showFollowing, setShowFollowing] = useState(false);
+  const [followersList, setFollowersList] = useState([]);
+  const [followingList, setFollowingList] = useState([]);
   const dispatch = useDispatch();
   const userIn = useSelector((state) => state.userReducer);
   const isAuthenticated = userIn.isAuthenticated;
@@ -31,23 +37,42 @@ const Profile = () => {
   const tweets = tweetsInfo.tweets;
   const message = tweetsInfo.message;
   const userprofile = userIn.profileUser;
-  const history = useHistory()
+  const history = useHistory();
 
   message &&
     setTimeout(() => {
       dispatch(removeMesage());
     }, 3000);
+
   useEffect(() => {
-    if(isAuthenticated){
+    if (isAuthenticated) {
       dispatch(userProfile(username));
       dispatch(tweet_specific_user(username));
     }
-    
-    // if(!isAuthenticated){
-    //   history.push('/login')
-    // }
-    
-  }, [dispatch,username,history,isAuthenticated]);
+  }, [dispatch, username, history, isAuthenticated]);
+
+  // Fetch followers/following lists
+  const fetchFollowers = async () => {
+    try {
+      const res = await axiosInstance.get(`user/${username}/followers/`);
+      setFollowersList(res.data);
+      setShowFollowers(true);
+    } catch (err) {
+      setFollowersList([]);
+      setShowFollowers(true);
+    }
+  };
+
+  const fetchFollowing = async () => {
+    try {
+      const res = await axiosInstance.get(`user/${username}/following/`);
+      setFollowingList(res.data);
+      setShowFollowing(true);
+    } catch (err) {
+      setFollowingList([]);
+      setShowFollowing(true);
+    }
+  };
 
   return (
     <div>
@@ -118,13 +143,12 @@ const Profile = () => {
                 </div>
               ) : (
                 <div className="follow-or-edit">
-             
-                 <Link to={`/messages/w/${userprofile?.username}`}>
-                 <i className="largeicon mx-3 ">
+                  <Link to={`/messages/w/${userprofile?.username}`}>
+                    <i className="largeicon mx-3 ">
                       <BiSend />
                     </i>
-                 </Link>
-                
+                  </Link>
+
                   {userprofile?.i_follow ? (
                     <button
                       onClick={() => dispatch(userFollow(userprofile.username))}
@@ -162,18 +186,43 @@ const Profile = () => {
                 </span>
               </p>
               <div className="d-flex">
-                <FollowInfo
-                  number={userprofile?.followers}
-                  followinfo="followers"
-                />
-                <FollowInfo
-                  number={userprofile?.following}
-                  followinfo="following"
-                />
+                <span
+                  style={{ cursor: "pointer" }}
+                  onClick={() => history.push(`/${userprofile?.username}/followers-following?type=followers`)}
+                >
+                  <FollowInfo
+                    number={userprofile?.followers}
+                    followinfo="followers"
+                  />
+                </span>
+                <span
+                  style={{ cursor: "pointer" }}
+                  onClick={() => history.push(`/${userprofile?.username}/followers-following?type=following`)}
+                >
+                  <FollowInfo
+                    number={userprofile?.following}
+                    followinfo="following"
+                  />
+                </span>
               </div>
             </div>
           </>
         )}
+
+        {/* Followers Modal */}
+        <FollowListModal
+          show={showFollowers}
+          onClose={() => setShowFollowers(false)}
+          users={followersList}
+          title="Followers"
+        />
+        {/* Following Modal */}
+        <FollowListModal
+          show={showFollowing}
+          onClose={() => setShowFollowing(false)}
+          users={followingList}
+          title="Following"
+        />
 
         {tweets.map((tweet) => (
           <TweetPostCard

@@ -20,6 +20,7 @@ import PrivateRoomChat from "./pages/PrivateRoomChat";
 import FollowUser from "./pages/FollowUser";
 import GrokAiChat from "./pages/GrokAiChat";
 import { getNotifications } from "./redux/asyncActions/NotificationAsync";
+import FollowersFollowing from "./pages/FollowersFollowing";
 
 function App() {
   const userIn = useSelector((state) => state.userReducer);
@@ -77,11 +78,13 @@ function App() {
         <Route path="/messages/w/:username" component={PrivateRoomChat} />
         <Route path="/messages" component={ChatMessage} />
         <Route path="/register" component={Register} />
+        
         <Route path="/notifications" component={Notifications} />
         <Route path="/bookmark" component={BookmarkList} />
         <Route path="/follow-users" component={FollowUser} />
         <Route path="/explore" component={Explore} />
         <Route path="/grok-ai" component={GrokAiChat} />
+        <Route path="/:username/followers-following" component={FollowersFollowing} />
         
         <Route path="/:username" exact component={Profile} />
         <Route path="/:username/tweet/:id" component={TweetDetail} />
