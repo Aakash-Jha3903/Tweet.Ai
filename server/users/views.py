@@ -1,9 +1,9 @@
 from rest_framework import exceptions
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from .models import User
-from .serializers import UserSerializer, UserEditSerializer
+from .serializers import UserSerializer, UserEditSerializer, UserMiniSerializer
 from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView, RetrieveUpdateDestroyAPIView
 from .permissions import IsUserOrReadOnly
@@ -77,3 +77,19 @@ def follow_user_list(request):
     result_page = paginator.paginate_queryset(users,request)
     serializer = UserSerializer(result_page,many=True,context={'request':request})
     return paginator.get_paginated_response(serializer.data)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def user_followers_list(request, username):
+    user = User.objects.get(username=username)
+    followers = user.followed.all()
+    serializer = UserMiniSerializer(followers, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def user_following_list(request, username):
+    user = User.objects.get(username=username)
+    following = user.following.all()
+    serializer = UserMiniSerializer(following, many=True)
+    return Response(serializer.data)

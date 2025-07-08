@@ -9,32 +9,43 @@ class UserCreateSerializer(UserCreateSerializer):
         fields = ['email','username','nickname','password','avatar',]
         extra_kwargs = {'password': {'write_only': True}}
 
+class UserMiniSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['username', 'nickname', 'avatar', 'bio']
 
 class UserSerializer(serializers.ModelSerializer):
     i_follow = serializers.SerializerMethodField(read_only=True)
-    followers =  serializers.SerializerMethodField(read_only=True)
+    followers = serializers.SerializerMethodField(read_only=True)
     following = serializers.SerializerMethodField(read_only=True)
+    followers_list = serializers.SerializerMethodField(read_only=True)
+    following_list = serializers.SerializerMethodField(read_only=True)
+
     class Meta:
         model = User
         fields = [
-            'email','username',
-            'nickname','password',
-            'avatar','bio','cover_image',
-            'date_joined',
-            'followers','following','i_follow'
-            ]
+            'email', 'username', 'nickname', 'password',
+            'avatar', 'bio', 'cover_image', 'date_joined',
+            'followers', 'following', 'i_follow',
+            'followers_list', 'following_list'
+        ]
         extra_kwargs = {'password': {'write_only': True}}
 
-    def get_followers(self,obj):
+    def get_followers(self, obj):
         return obj.followed.count()
-        
-    def get_following(self,obj):
+
+    def get_following(self, obj):
         return obj.following.count()
-        
-    def get_i_follow(self,obj):
+
+    def get_i_follow(self, obj):
         current_user = self.context.get('request').user
         return True if current_user in obj.followed.all() else False
 
+    def get_followers_list(self, obj):
+        return UserMiniSerializer(obj.followed.all(), many=True).data
+
+    def get_following_list(self, obj):
+        return UserMiniSerializer(obj.following.all(), many=True).data
 
     def validate(self, data):
         if len(data.get("password")) <= 6:
