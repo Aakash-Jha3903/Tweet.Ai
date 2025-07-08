@@ -25,6 +25,9 @@ import {
 import { removeNotice } from "../redux/slices/NotificationSlice";
 import AlertMessage from "./SmallComponent/alertMessage";
 import { getNotifications } from "../redux/asyncActions/NotificationAsync";
+// import the Grok_image.png
+
+import Grok_image from "../Grok_image.png"
 
 const Sidebar = () => {
   const userIn = useSelector((state) => state.userReducer);
@@ -128,12 +131,43 @@ const Sidebar = () => {
             </li>
           )}
 
-          <li style={{ cursor: "pointer" }} className="ml-2 p-1">
-            <Link to="/" >
-              🤖
-              <span className="link-text"> Grok.Ai</span>
-            </Link>
-          </li>
+          {isAuthenticated && (
+            <li>
+              <Link to="/grok-ai" >
+                <i>
+                  <img src={Grok_image} alt="grok" width={30} height={30} className="text-center m-0  p-0" style={{ filter: 'invert(100%)' }} />
+                </i>
+                <span className="link-text m-0  p-0 " >Grok.Ai</span>
+              </Link>
+            </li>
+          )}
+
+          {isAuthenticated && (
+            //create a tweet button
+            <li>
+              <Link to="/">
+                <i>
+                  <BiAddToQueue />
+                </i>
+                <span className="link-text">Post</span>
+              </Link>
+            </li>
+          )}
+
+          {/* {isAuthenticated && (
+            <li className="profile-link">
+              <Link to={`/${user.username}`}>
+                <img
+                  src={user.avatar}
+                  alt="profile"
+                  className="rounded-circle"
+                  width="50px"
+                  height="50px"
+                />
+                <span className="link-text">{user.username}</span>
+              </Link>
+            </li>
+          )} */}
 
           <li>
             {isAuthenticated ? (

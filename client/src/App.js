@@ -18,6 +18,7 @@ import Explore from "./pages/Explore";
 import ChatMessage from "./pages/ChatMessage";
 import PrivateRoomChat from "./pages/PrivateRoomChat";
 import FollowUser from "./pages/FollowUser";
+import GrokAiChat from "./pages/GrokAiChat";
 import { getNotifications } from "./redux/asyncActions/NotificationAsync";
 
 function App() {
@@ -80,9 +81,11 @@ function App() {
         <Route path="/bookmark" component={BookmarkList} />
         <Route path="/follow-users" component={FollowUser} />
         <Route path="/explore" component={Explore} />
+        <Route path="/grok-ai" component={GrokAiChat} />
+        
         <Route path="/:username" exact component={Profile} />
         <Route path="/:username/tweet/:id" component={TweetDetail} />
-        <Route path="" component={NotFound} />
+        <Route path="*" component={NotFound} />
       </Switch>
     </BrowserRouter>
   );
