@@ -16,7 +16,7 @@ class TweetManager(models.Manager):
 
 
 class Tweet(models.Model):
-    title = models.CharField(max_length=200)
+    title = models.TextField()
     body = models.TextField(blank=True)
     liked = models.ManyToManyField(User, blank=True)
     image = models.ImageField(blank=True, null=True, upload_to='tweetspic')
