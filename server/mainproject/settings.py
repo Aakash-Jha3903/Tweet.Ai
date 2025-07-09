@@ -18,6 +18,7 @@ ALLOWED_HOSTS = []
 
 # Application definition
 INSTALLED_APPS = [
+    'jazzmin',
     'channels',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -36,8 +37,11 @@ INSTALLED_APPS = [
     'chat',
     'ai',
     'users',
-    'grok_ai'
+    'grok_ai',
+    'django_extensions',
+    'drf_spectacular',
 ]
+
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',  # ✅ Must be first
@@ -114,6 +118,7 @@ USE_L10N = True
 USE_TZ = True
 
 REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',   # OpenAPI-Swagger
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
 
@@ -199,3 +204,20 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = env("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+
+# OpenAPI Swagger Settings imports : 
+from .OpenAPI_Swagger_settings import SPECTACULAR_SETTINGS
+from .OpenAPI_Swagger_settings import LOGGING
+
+
+# Jazzmin Settings imports : 
+from .Jazzmin_settings import JAZZMIN_SETTINGS
+from .Jazzmin_settings import JAZZMIN_UI_TWEAKS
+
+ 
+# Graph Models Settings, to generate graph models of the database
+# https://dreampuf.github.io/GraphvizOnline/
+GRAPH_MODELS = {
+  'all_applications': True,
+  'group_models': True,
+}
