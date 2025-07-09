@@ -1,6 +1,6 @@
 # 🦚 Tweet.Ai — AI-Powered Social Media Platform Inspired by Twitter, WhatsApp & Grok.Ai
 
-A feature-rich, full-stack social media platform that lets users post, comment, chat, and interact — enhanced by powerful AI tools like **sentiment analysis** of comments, **summarization** of tweet & comments, and a built-in **chatbot**. It also supports **real-time private messaging with typing indicators**, providing a chat experience similar to modern messengers(like WhatsApp) and many more features.
+A feature-rich, full-stack social media platform that lets users post, comment, chat, and interact — enhanced by powerful AI tools like **sentiment analysis** of comments, **summarization** of tweet & comments, and a built-in **chatbot**. It also supports **real-time private messaging with typing indicators**, providing a chat experience similar to modern messengers (like WhatsApp) and many more features.
 
 Tweet.Ai blends the familiarity of Twitter with the conversational power of Grok.Ai and the real-time feel of WhatsApp to create a smarter, more meaningful online experience.
 
@@ -208,6 +208,68 @@ Below is a complete visual walkthrough of Tweet.Ai’s user interface, organized
 - **404 Page Not Found🙃**
   ![](./Project_Interface/Page_Not_Found_404.png)
 
+---
+## 🧑🏻‍💻 Clone & Run the project
+
+###  1. Clone the Repository
+```bash
+git clone https://github.com/Aakash-Jha3903/Tweet.Ai.git
+```
+
+### 2. Navigate to the Server Directory
+```bash
+cd server
+python -m venv venv
+source venv/bin/activate   # On Windows: venv\Scripts\activate
+```
+
+###  3. Install Dependencies
+```bash
+#This may time to complete, due to the size of the dependencies and speed of your internet connection.
+pip install -r requirements.txt
+```
+### 4. Set Up Environment Variables
+Create a `.env` file in the `server` and `client` directory and add the following variables:
+#### 📁 `client/.env`
+```env
+REACT_APP_DOMAIN=http://localhost:8000/
+REACT_APP_WS_DOMAIN=ws://localhost:8000/
+```
+#### 📁 `server/.env`
+```env
+SECRET_KEY="your_secret_key"
+LLM_API_KEY=xyz    # Your Gemini/LLM API key (no spaces)
+EMAIL_HOST_USER="your_gmail"
+EMAIL_HOST_PASSWORD="your_gmail_password"
+```
+### 5. Run Migrations
+```bash
+python manage.py makemigrations
+python manage.py migrate
+```
+### 6. Create a Superuser (Admin)
+```bash
+python manage.py createsuperuser
+```
+### 7. Run the Development Server
+```bash
+python manage.py runserver
+```
+### 8. Start the React Client
+Open a new terminal, navigate to the `client` directory, and run:
+```bash
+npm install  #This may time to complete, due to the size of the dependencies and speed of your internet connection.
+
+npm start
+```
+### 9. Access the Application
+- Open your browser and go to `http://localhost:3000` to access the client
+- For the admin panel, go to `http://localhost:8000/admin` and log in with the superuser credentials you created.
+
+### 10 🗂️ Add .gitignore
+- ⚠️ Make sure to include `.env` , node-modules and virtual environment folders in your `.gitignore` to avoid exposing secrets.
+
+---
 
 ## 🙏🏻 Thank You
 
