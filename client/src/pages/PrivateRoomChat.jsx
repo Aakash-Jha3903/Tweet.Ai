@@ -181,7 +181,7 @@ const PrivateRoomChat = () => {
         <div className="bottom-input">
           {typingUser !== me && (
             <span
-              style={{ position: "absolute", left: 10, bottom: 50 }}
+              style={{ position: "absolute", left: 10, bottom: 50 , color:"green",fontSize:"18px", fontWeight:"550" }}
               className="ml-4"
             >
               {istyping}

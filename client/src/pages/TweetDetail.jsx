@@ -207,7 +207,7 @@ const TweetDetail = () => {
             {tweet.title && tweet.title.length > 15 && (
               <SummarizeButton
                 tweetId={tweet.id}
-                tweetText={tweet.text || tweet.title || ''}
+                tweetText={ tweet.title + tweet.body || tweet.title ||''}
               />
             )}
           </div>

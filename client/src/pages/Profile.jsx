@@ -17,8 +17,9 @@ import { removeMesage } from "../redux/slices/tweetSlice";
 import AlertMessage from "../components/SmallComponent/alertMessage";
 import UserEditModal from "../components/UserRelated/UserEditModal";
 import { FollowInfo } from "../components/SmallComponent/FollowInfo";
-import FollowListModal from "../components/UserRelated/FollowListModal"; // <-- import
+import FollowListModal from "../components/UserRelated/FollowListModal";
 import { axiosInstance } from "../index";
+import { Navigate } from "react-router-dom";
 
 const Profile = () => {
   const { username } = useParams();
