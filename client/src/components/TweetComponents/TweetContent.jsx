@@ -3,7 +3,7 @@ import { AiFillUnlock } from "react-icons/ai";
 import { BiGlobe } from "react-icons/bi";
 import { editTweet } from "../../redux/asyncActions/TweetAsync";
 import Viewer from "react-viewer";
-import {FaLock } from "react-icons/fa";
+import { FaLock } from "react-icons/fa";
 import Moment from 'moment';
 export const TweetContent = ({
   id,
@@ -23,15 +23,15 @@ export const TweetContent = ({
   return (
     <div className="tweet-content">
       <div>
-  
+
         <span style={{ display: "flex", alignItems: "center" }}>
           {tweet.author.username}
-          
+
           <span className="mx-2 side-name">
             @ {tweet.author.username} |
-             {/* {Moment(tweet.created ).format('MMM Do YY')} */}
-             <span className="mx-1">{Moment(tweet.created).fromNow(true)}</span>
-            {tweet.is_private ? <FaLock/> : <BiGlobe />}
+            {/* {Moment(tweet.created ).format('MMM Do YY')} */}
+            <span className="mx-1">{Moment(tweet.created).fromNow(true)}</span>
+            {tweet.is_private ? <FaLock /> : <BiGlobe />}
             {tweet.isEdited && <span className="mx-2">- Edited</span>}
           </span>
         </span>
@@ -76,11 +76,21 @@ export const TweetContent = ({
             </button>
           </>
         ) : (
-          tweet.title
+          <>
+            {tweet.title}
+            {tweet?.body && (tweet.body)}
+          </>
         )}
       </p>
       {tweet.image && (
         <img
+          style={{
+            cursor: "pointer", width: "100%", height: "auto",
+            borderRadius: "10px", boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+            transition: "transform 0.2s", marginBottom: "10px", marginTop: "10px",
+            objectFit: "cover", objectPosition: "center",
+          }}
+
           onClick={() => setVisible(true)}
           alt="img"
           src={tweet.image}

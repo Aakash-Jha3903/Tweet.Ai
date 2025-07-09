@@ -19,7 +19,10 @@ const TrendBar = () => {
         <div className="follow">
           <h4 className="h4-title">Who to Follow ?</h4>
           {recommendusers?.map((user) => (
-            <RecommendUser key={user.username} user={user} />
+            <>
+              <RecommendUser key={user.username} user={user} />
+              <hr style={{ border: "1px solid grey", width: "100%" }} />
+            </>
           ))}
           <Link
             to="/follow-users">

@@ -14,7 +14,7 @@ const TweetPostCard = ({ tweet, dispatch, user }) => {
   };
   return (
     <div className="tweetCard">
-      <div className="actual-tweet">
+      <div className="actual-tweet mb-2">
         <div>
           <FiMoreHorizontal
             data-toggle="dropdown"

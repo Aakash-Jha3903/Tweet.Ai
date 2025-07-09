@@ -191,7 +191,7 @@ export const TweetOperation = ({
         <i data-toggle="tooltip" title=" reTweet" className="tweetIcons">
           <AiOutlineRetweet onClick={alertToLog} />
         </i>
-        <i className="tweetIcons heart-parent">
+        <i className="tweetIcons heart-parent ">
           <Heart onClick={alertToLog} />
 
           <span className="count">{like_count}</span>

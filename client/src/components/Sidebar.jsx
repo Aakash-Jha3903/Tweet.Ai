@@ -154,22 +154,7 @@ const Sidebar = () => {
             </li>
           )}
 
-          {/* {isAuthenticated && (
-            <li className="profile-link">
-              <Link to={`/${user.username}`}>
-                <img
-                  src={user.avatar}
-                  alt="profile"
-                  className="rounded-circle"
-                  width="50px"
-                  height="50px"
-                />
-                <span className="link-text">{user.username}</span>
-              </Link>
-            </li>
-          )} */}
-
-          <li>
+          <li className="mb-3" >
             {isAuthenticated ? (
               <Link to="/" onClick={logout}>
                 <i>
@@ -186,6 +171,25 @@ const Sidebar = () => {
               </Link>
             )}
           </li>
+
+          {isAuthenticated && (
+            <li className="slider-profile-link bg-dark text-white mt-5">
+              <Link to={`/${user.username}`}>
+                <img
+                  src={user.avatar}
+                  alt="profile"
+                  className="rounded-circle"
+                  width="60px"
+                  height="60px"
+                  style={{ objectFit: "cover", backgroundColor: 'black', color: 'white',
+                    border: '1px solid white', marginRight: '10px', marginLeft: '0px', fontSize: '20px',
+                    boxShadow: '0 0 10px rgba(0, 0, 0, 0.5)',  }}
+                />
+                <span className="link-text">{user.username}</span>
+              </Link>
+            </li>
+          )}
+
         </ul>
       </div>
     </>
