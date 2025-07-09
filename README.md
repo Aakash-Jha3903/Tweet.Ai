@@ -71,7 +71,8 @@ Tweet.Ai blends the familiarity of Twitter with the conversational power of Grok
    - [📝 AI-Powered Summarization🐦‍🔥🔥](#-ai-powered-summarization)
    - [🚫 Error Handling](#-error-handling)
 5. [🔮 Future Enhancements](#-future-enhancements)
-6. [🙏🏻 Thank You](#-thank-you)
+6. [🧑🏻‍💻 How to Run this project](#-clone--run-the-project)
+7. [🙏🏻 Thank You](#-thank-you)
 
 ---
 
@@ -227,6 +228,7 @@ source venv/bin/activate   # On Windows: venv\Scripts\activate
 ```bash
 #This may time to complete, due to the size of the dependencies and speed of your internet connection.
 pip install -r requirements.txt
+pip install -q -U google-genai  
 ```
 ### 4. Set Up Environment Variables
 Create a `.env` file in the `server` and `client` directory and add the following variables:
@@ -238,7 +240,10 @@ REACT_APP_WS_DOMAIN=ws://localhost:8000/
 #### 📁 `server/.env`
 ```env
 SECRET_KEY="your_secret_key"
+
 LLM_API_KEY=xyz    # Your Gemini/LLM API key (no spaces)
+# 🤖 https://ai.google.dev/gemini-api/docs/quickstart
+
 EMAIL_HOST_USER="your_gmail"
 EMAIL_HOST_PASSWORD="your_gmail_password"
 ```
@@ -258,8 +263,8 @@ python manage.py runserver
 ### 8. Start the React Client
 Open a new terminal, navigate to the `client` directory, and run:
 ```bash
+cd client
 npm install  #This may time to complete, due to the size of the dependencies and speed of your internet connection.
-
 npm start
 ```
 ### 9. Access the Application
