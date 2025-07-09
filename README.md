@@ -93,7 +93,7 @@ All core functionalities are supported by RESTful APIs developed using Django RE
 📁 `Technical_Details/Backend_APIs`
 
 - ![API Overview 1](./Technical_Details/Backend_APIs/OpenAPI_Swagger__1.png)
-- ![API Overview 2](./Technical_Details/Backend_APIs/OpenAPISwagger__2.png)
+- ![API Overview 2](./Technical_Details/Backend_APIs/OpenAPI_Swagger__2.png)
 
 ---
 
