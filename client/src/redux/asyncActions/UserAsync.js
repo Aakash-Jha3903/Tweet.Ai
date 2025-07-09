@@ -102,6 +102,10 @@ export const userProfile = (username) => async (dispatch) => {
     dispatch(setLoading(false));
     dispatch(profileUserSuccess(res.data));
   } catch (err) {
+    // redirect to page error/404
+    window.location.href = "/error/404";
+    console.log(err);
+
     dispatch(userFail());
     dispatch(setLoading(false));
   }
@@ -212,5 +216,5 @@ export const load_more_user = (pageNum) => async (dispatch) => {
     );
     dispatch(loadedMoreUser(res.data.data));
     dispatch(setMeta(res.data.meta));
-  } catch (err) {}
+  } catch (err) { }
 };

@@ -101,6 +101,8 @@ export const tweet_specific_user = (username) => async (dispatch) => {
     dispatch(setLoading(false));
     dispatch(tweetSuccess(res.data));
   } catch (err) {
+    window.location.href = "/error/404";
+    // display the 404 and user does not exist
     // dispatch(userFail());
     console.log(err);
   }
@@ -109,6 +111,7 @@ export const tweet_specific_user = (username) => async (dispatch) => {
 export const addTweet = (uploadData) => async (dispatch) => {
   dispatch(setUploading(true));
   try {
+    console.log("uploadData is ", uploadData);
     const res = await axiosInstance.post(`tweets/`, uploadData);
 
     dispatch(setUploading(false));
