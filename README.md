@@ -1,6 +1,8 @@
-# 🐦 Tweet.Ai — The Smartest Social Media Experience
+# 🦚 Tweet.Ai — AI-Powered Social Media Platform Inspired by Twitter, WhatsApp & Grok.Ai
 
-**Tweet.Ai** is a modern, AI-integrated social media platform that blends the power of sentiment analysis, smart recommendations, and interactive conversations with a Twitter-like UI. Built using **Django**, **React.js**, **PostgreSQL**, and **AI APIs**, this project focuses on intelligent comment filtering, chatbots, summarization, and user interactions.
+A feature-rich, full-stack social media platform that lets users post, comment, chat, and interact — enhanced by powerful AI tools like **sentiment analysis** of comments, **summarization** of tweet & comments, and a built-in **chatbot**. It also supports **real-time private messaging with typing indicators**, providing a chat experience similar to modern messengers(like WhatsApp) and many more features.
+
+Tweet.Ai blends the familiarity of Twitter with the conversational power of Grok.Ai and the real-time feel of WhatsApp to create a smarter, more meaningful online experience.
 
 ---
 
@@ -12,6 +14,7 @@
 - 🚀 **Explore Page**: Discover trending posts and users.
 - 🔖 **Bookmarks**: Save favorite posts for quick access.
 - 💬 **Nested Comments**: Engage in deep threaded discussions.
+- 🤝 **Recommended Users**: Get intelligent suggestions of people to follow
 - 👤 **Profile Management**: View followers, followings, and user posts.
 - 🔎 **Search Users**: Easily find and follow other users.
 - 🚫 **404 Page**: Custom page for broken links or invalid URLs.
@@ -19,8 +22,9 @@
 ### 💬 Communication
 
 - 📩 **Private Messaging**: Real-time private chats with other users.
+- ✍️ **Typing Indicator in DMs**: See when the other user is typing... — just like in WhatsApp.
+- 🔔 **Notifications**: Get notified for likes, comments, follows, retweet and messages.
 - 🤖 **Grok AI Chat**: Interact with a built-in AI chatbot: Grok.Ai
-- 🔔 **Notifications**: Get notified for likes, comments, follows, and messages.
 
 ### 🧠 AI Features
 
